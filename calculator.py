@@ -1,5 +1,27 @@
 import tkinter as tk
 
+# Button grid configuration
+def createButtons():
+    
+    button = [
+        
+        "7","8","9","*",
+        "4","5","6","-",
+        "1","2","3","+",
+        "+/-","0",".","="   
+    ]
+    
+    # CE button
+    numbers = tk.Button(window, text="CE", command=lambda: removeValue("CE"))
+    numbers.grid(row=2, column=3, sticky="nsew")
+    
+    # numbers and operator buttons
+    for i, val in enumerate(button):
+        numbers = tk.Button(window, text=val, command=lambda v=val: click(v))
+        numbers.grid(row=(i // 4) + 3, column=i % 4,sticky="nsew") 
+    
+    
+
 
 # Main window configuration
 window = tk.Tk()
@@ -37,6 +59,14 @@ for i in range(4):
     
 window.rowconfigure(0, weight=1)
 window.rowconfigure(1,weight=2)
+
+
+# Row configuration for buttons
+for i in range(2,7):
+    window.rowconfigure(i, weight=2)
+
+
+createButtons()    
 
 
 
