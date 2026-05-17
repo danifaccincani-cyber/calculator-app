@@ -27,7 +27,7 @@ def createButtons():
         
 def click(value):
     
-    global firstNumber, operator, expression, justCalculated
+    global firstNumber, operator, expression,newNumber
     
     match value:
         
@@ -47,6 +47,7 @@ def click(value):
                 
             operator = value
             output_history.set(expression)
+            newNumber = True
             
             
         case '=':
@@ -59,24 +60,29 @@ def click(value):
                 secondNumber = display.get()
                 expression+=secondNumber + "="
                 output_history.set(expression)
-                result = eval(firstNumber + operator + secondNumber)
+                result = round(eval(firstNumber + operator + secondNumber),10)
                 display.set(result)
                 firstNumber = ""
                 operator = ""
                 expression = ""
-                justCalculated = True
+                newNumber = True
                 
             except ZeroDivisionError:
                 display.set("Error")
+                firstNumber = ""
+                operator = ""
+                expression = ""
+                newNumber = True
+                output_history.set("")
         
                 
         # Number and decimal buttons
         case _:
             current_display = display.get()
     
-            if current_display in ("Insert a value", "Error") or justCalculated:
+            if current_display in ("Insert a value", "Error") or newNumber:
                 display.set(value)
-                justCalculated = False
+                newNumber = False
         
             elif operator == "":
                 if current_display == "0":
@@ -85,19 +91,19 @@ def click(value):
                     display.set(current_display + value)
             
             else:
-                display.set(value)
+                display.set(current_display + value)
         
                  
     
 def removeValue(value):
-    global expression,firstNumber,operator,justCalculated
+    global expression,firstNumber,operator,newNumber
     
     if value == "CE":
         display.set(0)
         expression = ""
         firstNumber = ""
         operator = ""
-        justCalculated = False
+        newNumber = False
         output_history.set("")
         
             
@@ -117,7 +123,7 @@ window.configure(bg="#1a1a1a")
 firstNumber = ""
 operator = ""
 expression = ""
-justCalculated = False
+newNumber = False
 
 
 # StringVar for display and history
