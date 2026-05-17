@@ -83,7 +83,19 @@ def click(value):
                 display.set(value)
                  
     
+def removeValue(value):
+    global expression,firstNumber,operator,justCalculated
     
+    if value == "CE":
+        display.set(0)
+        expression = ""
+        firstNumber = ""
+        operator = ""
+        justCalculated = False
+        output_history.set("")
+        
+            
+
 
 
 # Main window configuration
