@@ -12,13 +12,18 @@ def createButtons():
     ]
     
     # CE button
-    numbers = tk.Button(window, text="CE", command=lambda: removeValue("CE"))
+    numbers = tk.Button(window, text="CE", font=("Helvetica", 18), command=lambda: removeValue("CE"), bg="#ff3b30", fg="white")
     numbers.grid(row=2, column=3, sticky="nsew")
     
     # numbers and operator buttons
     for i, val in enumerate(button):
-        numbers = tk.Button(window, text=val, command=lambda v=val: click(v))
-        numbers.grid(row=(i // 4) + 3, column=i % 4,sticky="nsew")
+        
+        if val in ("+", "-", "*", "/", "="):
+            numbers = tk.Button(window, text=val, font=("Helvetica", 18), command=lambda v=val: click(v), bg="#ff9500", fg="white")
+        else:
+            numbers = tk.Button(window, text=val, font=("Helvetica", 18), command=lambda v=val: click(v), bg="#333333", fg="white")
+            
+        numbers.grid(row=(i // 4) + 3, column=i % 4, sticky="nsew")
         
 def click(value):
     
@@ -81,6 +86,7 @@ def click(value):
             
             else:
                 display.set(value)
+        
                  
     
 def removeValue(value):
@@ -104,6 +110,7 @@ window = tk.Tk()
 window.geometry("600x600")
 window.title("calculator App")
 window.resizable(False,False)
+window.configure(bg="#1a1a1a")
 
 
 # Global variables
@@ -119,12 +126,12 @@ output_history = tk.StringVar(value="")
 
 
 # history label - shows the expression
-history_label = tk.Label(window, textvariable=output_history)
+history_label = tk.Label(window, font=("Helvetica",12), anchor="e", bg="#1a1a1a", fg="white", textvariable=output_history)
 history_label.grid(row=0, column=0, columnspan=4, sticky="nsew")
 
 
 # main display label - shows current number
-label = tk.Label(window, textvariable=display)
+label = tk.Label(window, font=("Helvetica",24), anchor="e", bg="#1a1a1a", fg="white", bd=5, relief="sunken", textvariable=display)
 label.grid(row=1, column=0, columnspan=4, sticky="nsew")
 
 
