@@ -5,10 +5,10 @@ def createButtons():
     
     button = [
         
-        "7","8","9","*",
-        "4","5","6","-",
-        "1","2","3","+",
-        "+/-","0",".","="   
+        "7","8","9","/",
+        "4","5","6","*",
+        "1","2","3","-",
+        "0",".","+","="  
     ]
     
     # CE button
@@ -18,7 +18,70 @@ def createButtons():
     # numbers and operator buttons
     for i, val in enumerate(button):
         numbers = tk.Button(window, text=val, command=lambda v=val: click(v))
-        numbers.grid(row=(i // 4) + 3, column=i % 4,sticky="nsew") 
+        numbers.grid(row=(i // 4) + 3, column=i % 4,sticky="nsew")
+        
+def click(value):
+    
+    global firstNumber, operator, expression, justCalculated
+    
+    match value:
+        
+        #operator buttons
+        case '+' | '-' | '*' | '/':
+            
+            if operator != "":
+                
+                secondNumber = display.get()
+                expression+=secondNumber + value
+                firstNumber = str(eval(firstNumber + operator + secondNumber))
+                display.set(firstNumber)
+            
+            else:
+                expression+=display.get() + value
+                firstNumber = display.get()
+                
+            operator = value
+            output_history.set(expression)
+            
+            
+        case '=':
+            
+            try:
+                if firstNumber == "":
+                    display.set("Insert a value")
+                    return
+                
+                secondNumber = display.get()
+                expression+=secondNumber + "="
+                output_history.set(expression)
+                result = eval(firstNumber + operator + secondNumber)
+                display.set(result)
+                firstNumber = ""
+                operator = ""
+                expression = ""
+                justCalculated = True
+                
+            except ZeroDivisionError:
+                display.set("Error")
+        
+                
+        # Number and decimal buttons
+        case _:
+            current_display = display.get()
+    
+            if current_display in ("Insert a value", "Error") or justCalculated:
+                display.set(value)
+                justCalculated = False
+        
+            elif operator == "":
+                if current_display == "0":
+                    display.set(value)
+                else:
+                    display.set(current_display + value)
+            
+            else:
+                display.set(value)
+                 
     
     
 
@@ -35,6 +98,7 @@ window.resizable(False,False)
 firstNumber = ""
 operator = ""
 expression = ""
+justCalculated = False
 
 
 # StringVar for display and history
